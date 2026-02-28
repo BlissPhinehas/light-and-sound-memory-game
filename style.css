@@ -260,7 +260,16 @@ h1 {
     font-size: 3.5rem;
     color: #e8e8e8;
     letter-spacing: 4px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+}
+
+.eco-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: #4caf50;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+    font-weight: 400;
 }
 
 .subtitle {
