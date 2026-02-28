@@ -35,26 +35,35 @@
         <p class="status" id="statusText"></p>
 
                 <div id="gameButtonArea">
-                    <div class="btn-wrapper">
-                        <button id="button1" onmousedown="startTone(1)" onmouseup="stopTone()"></button>
-                        <p class="btn-label">Earth</p>
-                    </div>
-                    <div class="btn-wrapper">
-                        <button id="button2" onmousedown="startTone(2)" onmouseup="stopTone()"></button>
-                        <p class="btn-label">Water</p>
-                    </div>
-                    <div class="btn-wrapper">
-                        <button id="button3" onmousedown="startTone(3)" onmouseup="stopTone()"></button>
-                        <p class="btn-label">Fire</p>
-                    </div>
-                    <div class="btn-wrapper">
-                        <button id="button4" onmousedown="startTone(4)" onmouseup="stopTone()"></button>
-                        <p class="btn-label">Wind</p>
-                    </div>
+                                        <div class="btn-wrapper">
+                                                <button id="button1" aria-label="Earth (Green, Circle)" onmousedown="startTone(1)" onmouseup="stopTone()">
+                                                    <span class="btn-shape" aria-hidden="true">●</span>
+                                                </button>
+                                                <p class="btn-label">Earth</p>
+                                        </div>
+                                        <div class="btn-wrapper">
+                                                <button id="button2" aria-label="Water (Blue, Square)" onmousedown="startTone(2)" onmouseup="stopTone()">
+                                                    <span class="btn-shape" aria-hidden="true">■</span>
+                                                </button>
+                                                <p class="btn-label">Water</p>
+                                        </div>
+                                        <div class="btn-wrapper">
+                                                <button id="button3" aria-label="Fire (Orange, Triangle)" onmousedown="startTone(3)" onmouseup="stopTone()">
+                                                    <span class="btn-shape" aria-hidden="true">▲</span>
+                                                </button>
+                                                <p class="btn-label">Fire</p>
+                                        </div>
+                                        <div class="btn-wrapper">
+                                                <button id="button4" aria-label="Wind (Red, Star)" onmousedown="startTone(4)" onmouseup="stopTone()">
+                                                    <span class="btn-shape" aria-hidden="true">★</span>
+                                                </button>
+                                                <p class="btn-label">Wind</p>
+                                        </div>
                 </div>
 
         <div id="gameMessage" class="hidden">
             <p id="messageText"></p>
+            <div id="messageAction"></div>
             <button id="messageBtn" onclick="dismissMessage()">Play Again</button>
         </div>
 

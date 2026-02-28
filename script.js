@@ -1,3 +1,80 @@
+const lossActions = [
+  {
+    fact: "Over 8 million tons of plastic enter the ocean every year — most of it from land-based sources.",
+    action: "Next time you're outside, pick up 5 pieces of trash. It takes 2 minutes and it adds up.",
+    link: null
+  },
+  {
+    fact: "The average American generates about 4.4 pounds of trash per day. Less than a quarter of it gets recycled.",
+    action: "Start a recycling habit at home — separate paper, plastic and glass before your next trash day.",
+    link: null
+  },
+  {
+    fact: "A single plastic bag can take up to 1,000 years to decompose in a landfill.",
+    action: "Switch to reusable bags. Most grocery stores sell them for under $2.",
+    link: null
+  },
+  {
+    fact: "Forests absorb about 2.6 billion tons of CO2 every year — but we lose 15 billion trees annually.",
+    action: "Plant a tree or sponsor one through a verified program.",
+    link: { text: "Volunteer with The Nature Conservancy", url: "https://www.nature.org/en-us/get-involved/how-to-help/volunteer/" }
+  },
+  {
+    fact: "The ocean produces over 50% of the world's oxygen, but rising temperatures are bleaching coral reefs at record rates.",
+    action: "Support ocean conservation by joining a local beach cleanup or donating to a verified org.",
+    link: { text: "Ocean Conservancy Volunteer Programs", url: "https://oceanconservancy.org/trash-free-seas/international-coastal-cleanup/volunteer/" }
+  },
+  {
+    fact: "Food waste is the single largest category of material in US landfills, making up 24% of all waste.",
+    action: "Start composting your food scraps. Even a small bin on your counter makes a difference.",
+    link: null
+  },
+  {
+    fact: "Air pollution kills an estimated 7 million people per year — more than malaria, AIDS and tuberculosis combined.",
+    action: "Advocate for cleaner air in your community by joining a local climate action group.",
+    link: { text: "Join Citizens' Climate Lobby", url: "https://citizensclimatelobby.org/join-citizens-climate-lobby/" }
+  },
+  {
+    fact: "Less than 1% of the world's water is accessible fresh water. Most of it is locked in glaciers.",
+    action: "Fix leaky faucets at home — a single dripping tap wastes over 3,000 gallons of water a year.",
+    link: null
+  },
+  {
+    fact: "Urban green spaces reduce city temperatures by up to 8 degrees and improve mental health significantly.",
+    action: "Volunteer to maintain a local park, community garden or green space in your neighborhood.",
+    link: { text: "Find a local Sierra Club volunteer opportunity", url: "https://www.sierraclub.org/volunteer" }
+  },
+  {
+    fact: "Electronic waste is the fastest growing waste stream in the world. Most of it is never properly recycled.",
+    action: "Look up your nearest e-waste drop-off location before throwing out old phones or electronics.",
+    link: null
+  },
+  {
+    fact: "Bees pollinate about one third of everything we eat, but populations have declined by nearly 30% in recent decades.",
+    action: "Plant native flowers in your yard or a pot on your balcony. Even a small patch helps.",
+    link: null
+  },
+  {
+    fact: "Switching to a plant-based diet just one day a week reduces your carbon footprint more than buying local food.",
+    action: "Try one plant-based meal this week and see how it feels. Small changes at scale matter.",
+    link: null
+  }
+];
+
+// Shuffle helper and queue for loss actions (avoids repeats)
+let lossActionQueue = [];
+function getNextLossAction() {
+  if (lossActionQueue.length === 0) {
+    // Reshuffle when exhausted
+    lossActionQueue = [...lossActions];
+    for (let i = lossActionQueue.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [lossActionQueue[i], lossActionQueue[j]] = [lossActionQueue[j], lossActionQueue[i]];
+    }
+  }
+  return lossActionQueue.pop();
+}
+
 // Fun facts about nature — obscure and genuinely surprising
 const facts = [
   "Wood is the rarest resource in the universe. It only exists where life has evolved to create trees—so far, only on Earth.",
@@ -128,13 +205,16 @@ function updateBestScore() {
 
 function generatePattern() {
   pattern = [];
-  for (let i = 0; i < 8; i++) {
-    let next;
-    do {
-      next = Math.floor(Math.random() * 4) + 1;
-    } while (i >= 2 && next === pattern[i-1] && next === pattern[i-2]);
-    pattern.push(next);
-  }
+  addToPattern(); // start with one step
+}
+
+function addToPattern() {
+  let next;
+  const len = pattern.length;
+  do {
+    next = Math.floor(Math.random() * 4) + 1;
+  } while (len >= 2 && next === pattern[len-1] && next === pattern[len-2]);
+  pattern.push(next);
 }
 
 function startGame() {
@@ -175,8 +255,36 @@ function updateCounters() {
   }
 }
 
-function showMessage(msg) {
+function showMessage(msg, type) {
   messageText.textContent = msg;
+  const actionBox = document.getElementById("messageAction");
+  const msgBtn = document.getElementById("messageBtn");
+
+  if (type === "loss") {
+    const item = getNextLossAction();
+    actionBox.innerHTML = `
+      <p class="action-fact">${item.fact}</p>
+      <p class="action-text">${item.action}${item.link 
+        ? ` <a href="${item.link.url}" target="_blank">${item.link.text} →</a>` 
+        : ""
+      }</p>
+    `;
+    actionBox.style.display = "block";
+    msgBtn.style.display = "block";
+  } else if (type === "win") {
+    actionBox.innerHTML = `
+      <p class="action-fact">You remembered the pattern. The planet needs that same attention.</p>
+      <p class="action-text">Take that energy outside. <a href="https://www.nature.org/en-us/get-involved/how-to-help/volunteer/" target="_blank">Find a volunteer opportunity near you →</a></p>
+    `;
+    actionBox.style.display = "block";
+    msgBtn.style.display = "block";
+  } else {
+    // Strike message — hide button and action box
+    actionBox.innerHTML = "";
+    actionBox.style.display = "none";
+    msgBtn.style.display = "none";
+  }
+
   gameMessage.classList.remove("hidden");
 }
 
@@ -231,7 +339,7 @@ function guess(btn) {
     updateCounters();
     if (strikes >= maxStrikes) {
       stopGame();
-      showMessage("The earth resets. You ran out of chances.");
+      showMessage("You lost — but the earth doesn't give up that easily either.", "loss");
       return;
     }
     showMessage("Wrong step. " + (maxStrikes - strikes) + " chance" + (maxStrikes - strikes === 1 ? "" : "s") + " remaining.");
@@ -247,12 +355,8 @@ function guess(btn) {
 
   guessCounter++;
   if (guessCounter > progress) {
-    if (progress === pattern.length - 1) {
-      stopGame();
-      showMessage("Pattern complete. The earth remembers those who listen.");
-      return;
-    }
     progress++;
+    addToPattern();
     updateBestScore();
     updateCounters();
     playClueSequence();
