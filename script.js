@@ -1,3 +1,94 @@
+// Fun facts about nature — obscure and genuinely surprising
+const facts = [
+  "Wood is the rarest resource in the universe. It only exists where life has evolved to create trees—so far, only on Earth.",
+  "Trees in a forest share nutrients with each other through a underground fungal network scientists call the Wood Wide Web.",
+  "The immortal jellyfish (Turritopsis dohrnii) can revert to its juvenile form after becoming sexually mature, making it potentially immortal.",
+  "There are plants that can hear. The South African plant 'sensitive mimosa' folds its leaves when it hears the sound of a caterpillar chewing.",
+  "The ocean's deepest point, Challenger Deep, is so remote that more people have walked on the moon than have visited it.",
+  "A single teaspoon of healthy soil contains more living organisms than there are humans on Earth.",
+  "Sharks are older than trees. They have existed for over 450 million years, trees for only 350 million.",
+  "The Amazon rainforest creates its own weather system — it generates half of its own rainfall.",
+  "A bee must visit approximately two million flowers to produce one pound of honey.",
+  "Glaciers store about 69% of the world's fresh water. At current rates, most will be gone by 2100.",
+  "Whales communicate in songs that can travel thousands of miles through the ocean.",
+  "A single mature oak tree can support over 500 different species of insects, birds and mammals.",
+  "The blue whale's heartbeat is so loud it can be detected from two miles away.",
+  "The fungus Armillaria ostoyae in Oregon is the largest living organism on Earth, covering nearly 4 square miles underground.",
+  "The mantis shrimp can see colors that humans can't even imagine, with 16 types of color-receptive cones in their eyes.",
+  "The tardigrade, or water bear, can survive in space, boiling water, and even radiation that would kill most life.",
+  "The axolotl, a Mexican salamander, can regrow entire limbs, parts of its heart, and even parts of its brain.",
+  "The Sahara Desert was once a lush, green area with lakes and forests.",
+  "Honey never spoils. Archaeologists have found edible honey in ancient Egyptian tombs.",
+  "A day on Mercury is longer than its year.",
+  "Some turtles can breathe through their butts!"
+];
+
+let currentFact = 0;
+
+// cycles through facts with a fade transition
+function rotateFact() {
+  const factEl = document.getElementById("factText");
+  factEl.classList.add("fade");
+  setTimeout(() => {
+    currentFact = (currentFact + 1) % facts.length;
+    factEl.textContent = facts[currentFact];
+    factEl.classList.remove("fade");
+  }, 1000);
+}
+
+// initialize first fact and start rotation
+function initFacts() {
+  const factEl = document.getElementById("factText");
+  factEl.textContent = facts[0];
+  setInterval(rotateFact, 90000);
+}
+
+initFacts();
+
+// Particle background — slow floating particles like spores or dust
+const canvas = document.getElementById("bgCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+const particles = [];
+const particleCount = 60;
+
+for (let i = 0; i < particleCount; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    radius: Math.random() * 1.5 + 0.5,
+    speedY: Math.random() * 0.3 + 0.1,
+    speedX: (Math.random() - 0.5) * 0.2,
+    opacity: Math.random() * 0.3 + 0.05
+  });
+}
+
+function drawParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(76, 175, 80, ${p.opacity})`;
+    ctx.fill();
+    p.y -= p.speedY;
+    p.x += p.speedX;
+    if (p.y < -5) {
+      p.y = canvas.height + 5;
+      p.x = Math.random() * canvas.width;
+    }
+  });
+  requestAnimationFrame(drawParticles);
+}
+
+drawParticles();
 // Global Variables
 let pattern = [];
 let progress = 0;

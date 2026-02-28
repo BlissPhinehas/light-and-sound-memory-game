@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EcoMemory</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 
 <body>
+    <canvas id="bgCanvas"></canvas>
     <div class="container">
         <h1>EcoMemory</h1>
         <p class="subtitle">A memory game inspired by the natural world.</p>
@@ -31,19 +34,35 @@
         <p id="bestScore" class="hidden">Best — 0</p>
         <p class="status" id="statusText"></p>
 
-        <div id="gameButtonArea">
-            <button id="button1"></button>
-            <button id="button2"></button>
-            <button id="button3"></button>
-            <button id="button4"></button>
-        </div>
+                <div id="gameButtonArea">
+                    <div class="btn-wrapper">
+                        <button id="button1" onmousedown="startTone(1)" onmouseup="stopTone()"></button>
+                        <p class="btn-label">Earth</p>
+                    </div>
+                    <div class="btn-wrapper">
+                        <button id="button2" onmousedown="startTone(2)" onmouseup="stopTone()"></button>
+                        <p class="btn-label">Water</p>
+                    </div>
+                    <div class="btn-wrapper">
+                        <button id="button3" onmousedown="startTone(3)" onmouseup="stopTone()"></button>
+                        <p class="btn-label">Fire</p>
+                    </div>
+                    <div class="btn-wrapper">
+                        <button id="button4" onmousedown="startTone(4)" onmouseup="stopTone()"></button>
+                        <p class="btn-label">Wind</p>
+                    </div>
+                </div>
 
         <div id="gameMessage" class="hidden">
             <p id="messageText"></p>
             <button id="messageBtn" onclick="dismissMessage()">Play Again</button>
         </div>
 
-        <p class="footer">Every pattern matters. So does every choice we make for this planet.</p>
+                <div id="factBox">
+                    <p id="factLabel">did you know</p>
+                    <p id="factText"></p>
+                </div>
+                <p class="footer">Every pattern matters. So does every choice we make for this planet.</p>
     </div>
 
     <script src="script.js"></script>
