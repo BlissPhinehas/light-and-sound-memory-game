@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EcoMemory</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1>EcoMemory</h1>
+        <p class="subtitle">A memory game inspired by the natural world.</p>
+        <p class="description">
+            Watch the sequence of lights and sounds, then repeat it back in order.
+            Each round adds one more step. Miss one, and the earth resets.
+            How far can you go?
+        </p>
+
+        <div class="btn-row">
+            <button id="startBtn" onclick="startGame()">Start</button>
+            <button id="stopBtn" class="hidden" onclick="stopGame()">End</button>
+        </div>
+
+        <div id="gameButtonArea">
+            <button id="button1" onmousedown="startTone(1)" onmouseup="stopTone()"></button>
+            <button id="button2" onmousedown="startTone(2)" onmouseup="stopTone()"></button>
+            <button id="button3" onmousedown="startTone(3)" onmouseup="stopTone()"></button>
+            <button id="button4" onmousedown="startTone(4)" onmouseup="stopTone()"></button>
+        </div>
+
+        <p class="footer">Every pattern matters. So does every choice we make for this planet.</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

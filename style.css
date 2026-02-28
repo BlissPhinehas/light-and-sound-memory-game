@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0f0f0f;
+    color: #d4d4d4;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+    max-width: 600px;
+    padding: 40px 20px;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    color: #e8e8e8;
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 24px;
+}
+
+.description {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #888;
+    max-width: 460px;
+    margin: 0 auto 36px auto;
+}
+
+.btn-row {
+    margin-bottom: 40px;
+}
+
+#startBtn,
+#stopBtn {
+    background: transparent;
+    border: 1px solid #444;
+    color: #d4d4d4;
+    padding: 12px 36px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+#startBtn:hover,
+#stopBtn:hover {
+    border-color: #888;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.hidden {
+    display: none;
+}
+
+#gameButtonArea {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    max-width: 440px;
+    margin: 0 auto 40px auto;
+}
+
+#gameButtonArea>button {
+    height: 180px;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    opacity: 0.85;
+}
+
+#gameButtonArea>button:hover {
+    opacity: 1;
+    transform: scale(1.02);
+}
+
+/* Earth */
+#button1 {
+    background: #2d5a27;
+}
+
+#button1:active,
+#button1.lit {
+    background: #4caf50;
+    box-shadow: 0 0 30px #4caf5066;
+}
+
+/* Water */
+#button2 {
+    background: #1a3a5c;
+}
+
+#button2:active,
+#button2.lit {
+    background: #2196f3;
+    box-shadow: 0 0 30px #2196f366;
+}
+
+/* Amber */
+#button3 {
+    background: #5a3e1b;
+}
+
+#button3:active,
+#button3.lit {
+    background: #ff9800;
+    box-shadow: 0 0 30px #ff980066;
+}
+
+/* Crimson */
+#button4 {
+    background: #4a1520;
+}
+
+#button4:active,
+#button4.lit {
+    background: #e53935;
+    box-shadow: 0 0 30px #e5393566;
+}
+
+.footer {
+    font-size: 0.75rem;
+    color: #444;
+    letter-spacing: 1px;
+    margin-top: 20px;
+}
