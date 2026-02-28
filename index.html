@@ -25,11 +25,22 @@
 
         <div id="statusMessage" class="hidden"></div>
 
+
+        <p id="roundCounter" class="hidden">Round 1</p>
+        <p id="strikeCounter" class="hidden">Strikes &mdash; 0 / 3</p>
+        <p id="bestScore" class="hidden">Best — 0</p>
+        <p class="status" id="statusText"></p>
+
         <div id="gameButtonArea">
             <button id="button1"></button>
             <button id="button2"></button>
             <button id="button3"></button>
             <button id="button4"></button>
+        </div>
+
+        <div id="gameMessage" class="hidden">
+            <p id="messageText"></p>
+            <button id="messageBtn" onclick="dismissMessage()">Play Again</button>
         </div>
 
         <p class="footer">Every pattern matters. So does every choice we make for this planet.</p>

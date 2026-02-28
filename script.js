@@ -1,158 +1,171 @@
 // Global Variables
 let pattern = [];
 let progress = 0;
-let inputCount = 0;
-
-function generatePattern() {
-  pattern = [];
-  for (let i = 0; i < 8; i++) {
-    let newButton;
-    
-    // Prevent more than 2 consecutive repeats
-    if (i >= 2 && pattern[i - 1] === pattern[i - 2]) {
-      // Last two buttons are the same, pick a different one
-      do {
-        newButton = Math.floor(Math.random() * 4) + 1;
-      } while (newButton === pattern[i - 1]);
-    } else {
-      // No restriction, any button is fine
-      newButton = Math.floor(Math.random() * 4) + 1;
-    }
-    
-    pattern.push(newButton);
-  }
-  console.log("New pattern:", pattern);
-}
+let guessCounter = 0;
 let gamePlaying = false;
 let tonePlaying = false;
 let volume = 0.5;
 let allowInput = false;
+let strikes = 0;
+const maxStrikes = 3;
 
 const clueHoldTime = 1000;
 const cluePauseTime = 333;
 const nextClueWaitTime = 1000;
 
+// DOM references
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
+const statusText = document.getElementById("statusText");
+const roundCounter = document.getElementById("roundCounter");
+const strikeCounter = document.getElementById("strikeCounter");
+const gameMessage = document.getElementById("gameMessage");
+const messageText = document.getElementById("messageText");
+const bestScoreDisplay = document.getElementById("bestScore");
+let bestScore = Number(localStorage.getItem("ecoMemoryBest")) || 0;
 
-for (let i = 1; i <= 4; i++) {
-    const button = document.getElementById("button" + i);
-    button.addEventListener("mousedown", function () {
-        console.log("You clicked button:", i);
-        startTone(i);
-    });
-    button.addEventListener("mouseup", function () {
-        stopTone();
-    });
-    button.addEventListener("mouseleave", function () {
-        stopTone();
-    });
-    button.addEventListener("touchstart", function (event) {
-        event.preventDefault();
-        console.log("You tapped button:", i);
-        startTone(i);
-    }, { passive: false });
-    button.addEventListener("touchend", function (event) {
-        event.preventDefault();
-        stopTone();
-    });
-    button.addEventListener("touchcancel", function () {
-        stopTone();
-    });
+function updateBestScore() {
+  if (progress > bestScore) {
+    bestScore = progress;
+    localStorage.setItem("ecoMemoryBest", bestScore);
+    bestScoreDisplay.textContent = "Best — " + bestScore;
+    bestScoreDisplay.classList.add("new-record");
+  } else {
+    bestScoreDisplay.classList.remove("new-record");
+  }
+}
+
+function generatePattern() {
+  pattern = [];
+  for (let i = 0; i < 8; i++) {
+    let next;
+    do {
+      next = Math.floor(Math.random() * 4) + 1;
+    } while (i >= 2 && next === pattern[i-1] && next === pattern[i-2]);
+    pattern.push(next);
+  }
 }
 
 function startGame() {
-    generatePattern();
-    progress = 0;
-    inputCount = 0;
-    gamePlaying = true;
-    allowInput = false;
-    startBtn.classList.add("hidden");
-    stopBtn.classList.remove("hidden");
-    playClueSequence();
+  generatePattern();
+  progress = 0;
+  strikes = 0;
+  gamePlaying = true;
+  allowInput = false;
+  startBtn.classList.add("hidden");
+  stopBtn.classList.remove("hidden");
+  roundCounter.classList.remove("hidden");
+  strikeCounter.classList.remove("hidden");
+  bestScoreDisplay.classList.remove("hidden");
+  bestScoreDisplay.textContent = "Best — " + bestScore;
+  updateCounters();
+  playClueSequence();
 }
 
 function stopGame() {
-    gamePlaying = false;
-    allowInput = false;
-    inputCount = 0;
-    startBtn.classList.remove("hidden");
-    stopBtn.classList.add("hidden");
-    
-    // Hide status message
-    const statusMsg = document.getElementById("statusMessage");
-    statusMsg.classList.add("hidden");
+  gamePlaying = false;
+  allowInput = false;
+  startBtn.classList.remove("hidden");
+  stopBtn.classList.add("hidden");
+  roundCounter.classList.add("hidden");
+  strikeCounter.classList.add("hidden");
+  bestScoreDisplay.classList.add("hidden");
+  statusText.textContent = "";
+  statusText.classList.remove("active");
+}
+
+function updateCounters() {
+  roundCounter.textContent = "Round " + (progress + 1);
+  strikeCounter.textContent = "Strikes — " + strikes + " / " + maxStrikes;
+  if (strikes >= 2) {
+    strikeCounter.classList.add("warn");
+  } else {
+    strikeCounter.classList.remove("warn");
+  }
+}
+
+function showMessage(msg) {
+  messageText.textContent = msg;
+  gameMessage.classList.remove("hidden");
+}
+
+function dismissMessage() {
+  gameMessage.classList.add("hidden");
+  setTimeout(() => {
+    startGame();
+  }, 100); // slight delay to ensure overlay is hidden before game starts
 }
 
 function lightButton(btn) {
-    document.getElementById("button" + btn).classList.add("lit");
+  document.getElementById("button" + btn).classList.add("lit");
 }
 
 function clearButton(btn) {
-    document.getElementById("button" + btn).classList.remove("lit");
+  document.getElementById("button" + btn).classList.remove("lit");
 }
 
 function playSingleClue(btn) {
-    if (gamePlaying) {
-        console.log("Playing clue for button:", btn);
-        lightButton(btn);
-        playTone(btn, clueHoldTime);
-        setTimeout(clearButton, clueHoldTime, btn);
-    }
+  if (gamePlaying) {
+    lightButton(btn);
+    playTone(btn, clueHoldTime);
+    setTimeout(clearButton, clueHoldTime, btn);
+  }
 }
 
 function playClueSequence() {
   context.resume();
   allowInput = false;
-  
-  // Show "Watch..." message
-  const statusMsg = document.getElementById("statusMessage");
-  statusMsg.textContent = "Watch...";
-  statusMsg.classList.remove("hidden");
-  
+  window.activeBtn = null;
+  statusText.textContent = "Watch.";
+  statusText.classList.remove("active");
   let delay = nextClueWaitTime;
   for (let i = 0; i <= progress; i++) {
     setTimeout(playSingleClue, delay, pattern[i]);
     delay += clueHoldTime;
     delay += cluePauseTime;
   }
-  // wait for last clue to fully finish before allowing input
-  setTimeout(() => { 
+  setTimeout(() => {
     allowInput = true;
-    statusMsg.textContent = "Your turn!";
-    console.log("player can now input");
-  }, delay + 200);
+    guessCounter = 0;
+    statusText.textContent = "Your turn.";
+    statusText.classList.add("active");
+  }, delay);
 }
 
 function guess(btn) {
-    console.log("guess called, btn:", btn, "allowInput:", allowInput, "progress:", progress, "inputCount:", inputCount);
+  if (!gamePlaying || !allowInput) return;
 
-    if (!gamePlaying || !allowInput) return;
-
-    // Check if the button matches the next expected button in the sequence
-    if (pattern[inputCount] !== btn) {
-        console.log("wrong! expected", pattern[inputCount], "got", btn);
-        stopGame();
-        alert("Wrong button. The earth resets.");
-        return;
+  if (pattern[guessCounter] !== btn) {
+    strikes++;
+    updateCounters();
+    if (strikes >= maxStrikes) {
+      stopGame();
+      showMessage("The earth resets. You ran out of chances.");
+      return;
     }
+    showMessage("Wrong step. " + (maxStrikes - strikes) + " chance" + (maxStrikes - strikes === 1 ? "" : "s") + " remaining.");
+    // let them retry the same round
+    setTimeout(() => {
+      gameMessage.classList.add("hidden");
+      gamePlaying = true;
+      guessCounter = 0;
+      playClueSequence();
+    }, 2000);
+    return;
+  }
 
-    inputCount++;
-    console.log("correct! inputCount now:", inputCount, "need:", progress + 1);
-
-    // Check if player has completed the current round
-    if (inputCount > progress) {
-        progress++;
-        inputCount = 0;
-        
-        if (progress === pattern.length) {
-            stopGame();
-            alert("You did it. Pattern complete.");
-            return;
-        }
-        
-        playClueSequence();
+  guessCounter++;
+  if (guessCounter > progress) {
+    if (progress === pattern.length - 1) {
+      stopGame();
+      showMessage("Pattern complete. The earth remembers those who listen.");
+      return;
     }
+    progress++;
+    updateBestScore();
+    updateCounters();
+    playClueSequence();
+  }
 }
 
 // Sound synthesis
@@ -163,31 +176,28 @@ gainNode.connect(context.destination);
 gainNode.gain.setValueAtTime(0, context.currentTime);
 
 const freqMap = {
-    1: 261.6,
-    2: 329.6,
-    3: 392,
-    4: 466.2
+  1: 261.6,
+  2: 329.6,
+  3: 392,
+  4: 466.2
 };
 
 function playTone(btn, len) {
-    const osc = context.createOscillator();
-    osc.connect(gainNode);
-    osc.type = "sine";
-    osc.frequency.value = freqMap[btn];
-    osc.start(context.currentTime);
-    gainNode.gain.setTargetAtTime(volume, context.currentTime, 0.01);
-    gainNode.gain.setTargetAtTime(0, context.currentTime + len / 1000, 0.01);
-    osc.stop(context.currentTime + (len / 1000) + 0.5);
+  const osc = context.createOscillator();
+  osc.connect(gainNode);
+  osc.type = "sine";
+  osc.frequency.value = freqMap[btn];
+  osc.start(context.currentTime);
+  gainNode.gain.setTargetAtTime(volume, context.currentTime, 0.01);
+  gainNode.gain.setTargetAtTime(0, context.currentTime + len / 1000, 0.01);
+  osc.stop(context.currentTime + (len / 1000) + 0.5);
 }
 
 function startTone(btn) {
   if (tonePlaying) return;
   context.resume();
   tonePlaying = true;
-  // Only register the button if input is allowed (prevents clicks during clue sequence)
-  if (allowInput) {
-    window.activeBtn = btn;
-  }
+  window.activeBtn = btn;
   const osc = context.createOscillator();
   osc.connect(gainNode);
   osc.type = "sine";
@@ -204,8 +214,33 @@ function stopTone() {
     window.currentOscillator = null;
   }
   tonePlaying = false;
-  if (window.activeBtn !== null && window.activeBtn !== undefined) {
-    guess(window.activeBtn);
-    window.activeBtn = null;
+  const btn = window.activeBtn;
+  window.activeBtn = null;
+  if (btn !== null && btn !== undefined && gamePlaying && allowInput) {
+    guess(btn);
   }
-} 
+}
+
+for (let i = 1; i <= 4; i++) {
+  const button = document.getElementById("button" + i);
+  button.addEventListener("mousedown", function () {
+    startTone(i);
+  });
+  button.addEventListener("mouseup", function () {
+    stopTone();
+  });
+  button.addEventListener("mouseleave", function () {
+    stopTone();
+  });
+  button.addEventListener("touchstart", function (event) {
+    event.preventDefault();
+    startTone(i);
+  }, { passive: false });
+  button.addEventListener("touchend", function (event) {
+    event.preventDefault();
+    stopTone();
+  });
+  button.addEventListener("touchcancel", function () {
+    stopTone();
+  });
+}
