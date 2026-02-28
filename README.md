@@ -1,6 +1,3 @@
-
-# light-and-sound-memory-game
-Light and Sound Memory Game, Futureforce Tech Launchpad
 # EcoMemory
 
 A light and sound memory game built with HTML, CSS, and JavaScript, themed around environmental awareness.
@@ -9,7 +6,7 @@ A light and sound memory game built with HTML, CSS, and JavaScript, themed aroun
 
 ## Overview
 
-EcoMemory is a browser-based memory game inspired by the classic Simon toy. The computer plays a sequence of lights and sounds, and the player must repeat it back in the correct order. Each round adds one more step to the sequence. Miss too many times, and the game resets. Complete the full pattern and you win.
+EcoMemory is a browser-based memory game inspired by the classic Simon toy. The computer plays a sequence of lights and sounds, and the player must repeat it back in the correct order. Each round adds one more step to the sequence. The game runs endlessly — there's no fixed length. You keep going until you lose all 3 strikes.
 
 The game is built entirely with vanilla HTML, CSS, and JavaScript; no frameworks, no libraries. Just the fundamentals.
 
@@ -27,34 +24,33 @@ The game is built entirely with vanilla HTML, CSS, and JavaScript; no frameworks
 
 ## Features
 
-- Randomly generated 8-step pattern every game
+- Endless mode — the pattern grows until you lose, no fixed limit
 - 3-strike system with visual warning on the final chance
 - Round counter that updates in real time
 - Personal best score that persists across sessions using localStorage
-- Styled win and loss overlay, no browser alerts
+- Styled loss overlay with actionable environmental facts and volunteer suggestions
 - Status indicator that tells you when to watch and when to play
 - Rotating nature facts that appear while you play
 - Animated particle background
+- Color-blind accessible — each button has a unique shape icon (circle, square, triangle, star)
 - Fully keyboard and mouse accessible
 
 ---
 
 ## The Four Elements
 
-Each button represents one of four natural elements, each with its own color and tone:
+Each button represents one of four natural elements, each with its own color, tone, and shape for accessibility:
 
-| Button | Element | Color |
-|--------|---------|-------|
-| 1 | Earth | Emerald green |
-| 2 | Water | Deep ocean blue |
-| 3 | Fire | Amber |
-| 4 | Wind | Crimson |
+| Button | Element | Color | Shape |
+|--------|---------|-------|-------|
+| 1 | Earth | Emerald green | Circle |
+| 2 | Water | Deep ocean blue | Square |
+| 3 | Fire | Amber | Triangle |
+| 4 | Wind | Crimson | Star |
 
 ---
 
-## Theme, Environmental Awareness
-
-## Theme ; Environmental Awareness
+## Theme: Environmental Awareness
 
 Environmental awareness felt like the right theme because it's a cause that actually matters. 
 Climate change and biodiversity loss don't affect everyone equally, underrepresented 
@@ -67,8 +63,8 @@ The nature facts in the game are ones most people haven't heard before. Not the 
 
 ## Main Functions
 
-### `generatePattern()`
-Builds a random 8-step sequence using integers 1 through 4, with logic to prevent the same button from repeating more than twice in a row. Called at the start of every new game.
+### `generatePattern()` / `addToPattern()`
+Starts the game with a single random step, then adds one new step each round. Logic prevents the same button from repeating more than twice in a row. The pattern grows indefinitely until the player loses.
 
 ### `playClueSequence()`
 Iterates through the pattern up to the current round and schedules each clue to play with a calculated delay, so they play one after another rather than all at once. Blocks player input while the sequence is running and opens it up only after the last clue has fully finished.
@@ -87,6 +83,9 @@ Cycles through an array of environmental facts every 90 seconds with a fade tran
 
 ### `drawParticles()`
 Renders a canvas-based particle animation in the background — small green dots that drift slowly upward like spores or seeds, giving the page a living, organic quality without being distracting.
+
+### `getNextLossAction()`
+Returns the next environmental action/volunteer suggestion from a shuffled queue. Ensures no repeats until all suggestions have been shown, then reshuffles.
 
 ---
 
