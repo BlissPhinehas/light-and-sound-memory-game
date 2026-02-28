@@ -1,16 +1,17 @@
+
 # light-and-sound-memory-game
-Light and Sound Memory Game - Futureforce Tech Launchpad
+Light and Sound Memory Game, Futureforce Tech Launchpad
 # EcoMemory
 
-A light and sound memory game built with HTML, CSS, and JavaScript — themed around environmental awareness.
+A light and sound memory game built with HTML, CSS, and JavaScript, themed around environmental awareness.
 
 ---
 
 ## Overview
 
-EcoMemory is a browser-based memory game inspired by the classic Simon toy. The computer plays a sequence of lights and sounds, and the player must repeat it back in the correct order. Each round adds one more step to the sequence. Miss too many times and the game resets. Complete the full pattern and you win.
+EcoMemory is a browser-based memory game inspired by the classic Simon toy. The computer plays a sequence of lights and sounds, and the player must repeat it back in the correct order. Each round adds one more step to the sequence. Miss too many times, and the game resets. Complete the full pattern and you win.
 
-The game is built entirely with vanilla HTML, CSS, and JavaScript — no frameworks, no libraries. Just the fundamentals.
+The game is built entirely with vanilla HTML, CSS, and JavaScript; no frameworks, no libraries. Just the fundamentals.
 
 ---
 
@@ -20,7 +21,7 @@ The game is built entirely with vanilla HTML, CSS, and JavaScript — no framewo
 2. Watch the sequence of buttons light up and listen to their tones
 3. When the status reads *Your turn*, repeat the sequence by clicking the buttons in order
 4. Each correct round adds one more step to the pattern
-5. You have 3 strikes per game — use them wisely
+5. You have 3 strikes per game, use them wisely
 
 ---
 
@@ -30,7 +31,7 @@ The game is built entirely with vanilla HTML, CSS, and JavaScript — no framewo
 - 3-strike system with visual warning on the final chance
 - Round counter that updates in real time
 - Personal best score that persists across sessions using localStorage
-- Styled win and loss overlay — no browser alerts
+- Styled win and loss overlay, no browser alerts
 - Status indicator that tells you when to watch and when to play
 - Rotating nature facts that appear while you play
 - Animated particle background
@@ -51,11 +52,16 @@ Each button represents one of four natural elements, each with its own color and
 
 ---
 
-## Theme — Environmental Awareness
+## Theme, Environmental Awareness
 
-The environmental theme was a deliberate choice. Climate change, biodiversity loss, and our disconnection from the natural world are issues that affect every community — but often hit underrepresented communities the hardest. This project was an opportunity to build something technically solid while also using that work to bring a little awareness to something that matters.
+## Theme ; Environmental Awareness
 
-The rotating nature facts embedded in the game are intentionally obscure — not the facts you already know, but the ones that make you stop and think. The kind that remind you how extraordinary and fragile the natural world actually is.
+Environmental awareness felt like the right theme because it's a cause that actually matters. 
+Climate change and biodiversity loss don't affect everyone equally, underrepresented 
+communities often bear the worst of it while having the least say in what gets done about it. 
+Building something small that keeps that conversation present felt worthwhile, even in the context of a memory game.
+
+The nature facts in the game are ones most people haven't heard before. Not the headline statistics, but the quieter details about how the natural world actually works. The kind of facts that stick with you.
 
 ---
 
@@ -68,16 +74,16 @@ Builds a random 8-step sequence using integers 1 through 4, with logic to preven
 Iterates through the pattern up to the current round and schedules each clue to play with a calculated delay, so they play one after another rather than all at once. Blocks player input while the sequence is running and opens it up only after the last clue has fully finished.
 
 ### `guess(btn)`
-Called when the player releases a button. Compares their input against the expected value in the pattern. If correct, advances the round. If wrong, increments the strike count. Handles win and loss conditions.
+Called when the player releases a button, compares their input against the expected value in the pattern. If correct, advances the round; if wrong, increments the strike count. Handles win and loss conditions.
 
 ### `startTone(btn)` / `stopTone()`
-Manages real-time audio using the Web Audio API. `startTone` creates an oscillator and begins playing a frequency mapped to the button. `stopTone` fades the gain and stops the oscillator, then registers the player's guess on release rather than on press — this prevents double-firing.
+Manages real-time audio using the Web Audio API. `startTone` creates an oscillator and begins playing a frequency mapped to the button. `stopTone` fades the gain and stops the oscillator, then registers the player's guess on release rather than on press, this prevents double-firing.
 
 ### `updateBestScore()`
 Compares the current progress against the stored best score in localStorage. If the player beats their record, it saves the new score and highlights it in green.
 
 ### `rotateFact()` / `initFacts()`
-Cycles through an array of environmental facts every 7 seconds with a fade transition. Facts are displayed at the bottom of the screen throughout the game.
+Cycles through an array of environmental facts every 90 seconds with a fade transition. Facts are displayed at the bottom of the screen throughout the game.
 
 ### `drawParticles()`
 Renders a canvas-based particle animation in the background — small green dots that drift slowly upward like spores or seeds, giving the page a living, organic quality without being distracting.
