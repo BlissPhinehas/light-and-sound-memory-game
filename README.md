@@ -77,7 +77,7 @@ Iterates through the pattern up to the current round and schedules each clue to 
 Called when the player releases a button, compares their input against the expected value in the pattern. If correct, advances the round; if wrong, increments the strike count. Handles win and loss conditions.
 
 ### `startTone(btn)` / `stopTone()`
-Manages real-time audio using the Web Audio API. `startTone` creates an oscillator and begins playing a frequency mapped to the button. `stopTone` fades the gain and stops the oscillator, then registers the player's guess on release rather than on press, this prevents double-firing.
+Manages real-time audio using the Web Audio API. `startTone` creates an oscillator and begins playing a frequency mapped to the button. `stopTone` fades the gain and stops the oscillator, then registers the player's guess on release rather than on press, which prevents double-firing.
 
 ### `updateBestScore()`
 Compares the current progress against the stored best score in localStorage. If the player beats their record, it saves the new score and highlights it in green.
@@ -93,10 +93,10 @@ Renders a canvas-based particle animation in the background — small green dots
 ## Challenges
 
 ### 1. The Double-Fire Bug
-The most persistent issue during development was that each button press was registering multiple guesses at once. The root cause was that `onmousedown`, `onmouseup`, and `onclick` were all firing in sequence, each triggering the `guess` function separately. The fix was to move the guess registration entirely to `stopTone` — the moment the player releases the button — and use a local variable to capture the active button before clearing it, preventing a race condition where the value disappeared before the function could read it.
+The most persistent issue during development was that each button press was registering multiple guesses at once. The root cause was that `onmousedown`, `onmouseup`, and `onclick` were all firing in sequence, each triggering the `guess` function separately. The fix was to move the guess registration entirely to `stopTone`; the moment the player releases the button, and use a local variable to capture the active button before clearing it, preventing a race condition where the value disappeared before the function could read it.
 
 ### 2. Input Timing
-Early on, the window for player input was opening before the last clue had fully finished playing. This meant clicking a button immediately after the sequence ended would either be ignored or count as a wrong answer even if the guess was correct. The fix was to calculate the total duration of the clue sequence — including the hold time of the final clue — and only open input after that full duration had elapsed.
+Early on, the window for player input was opening before the last clue had fully finished playing. This meant clicking a button immediately after the sequence ended would either be ignored or count as a wrong answer, even if the guess was correct. The fix was to calculate the total duration of the clue sequence, including the hold time of the final clue- and only open input after that full duration had elapsed.
 
 ### 3. False Fails
 Even after fixing the timing window, correct answers were occasionally being marked as wrong. The issue was a race condition between `allowInput` becoming `true` and the `guess` function checking it. The solution was to add an explicit `gamePlaying && allowInput` check directly inside `stopTone` at the exact moment of button release, rather than relying on a state that could shift between the mousedown and mouseup events.
