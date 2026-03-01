@@ -22,6 +22,14 @@
             How far can you go?
         </p>
 
+        <div class="mode-row">
+            <label for="modeSelect"><strong>Mode:</strong></label>
+            <select id="modeSelect" onchange="onModeChange()">
+                <option value="endless" selected>Endless</option>
+                <option value="fixed">Fixed Rounds</option>
+            </select>
+            <input type="number" id="roundInput" min="1" max="99" value="10" style="display:none;" placeholder="Rounds" />
+        </div>
         <div class="btn-row">
             <button id="startBtn" onclick="startGame()">Start</button>
             <button id="stopBtn" class="hidden" onclick="stopGame()">End</button>

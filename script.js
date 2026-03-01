@@ -192,6 +192,24 @@ const messageText = document.getElementById("messageText");
 const bestScoreDisplay = document.getElementById("bestScore");
 let bestScore = Number(localStorage.getItem("ecoMemoryBest")) || 0;
 
+// Mode selection
+let gameMode = "endless"; // 'endless' or 'fixed'
+let fixedRounds = 10;
+const modeSelect = document.getElementById("modeSelect");
+const roundInput = document.getElementById("roundInput");
+
+function onModeChange() {
+  gameMode = modeSelect.value;
+  if (gameMode === "fixed") {
+    roundInput.style.display = "inline-block";
+  } else {
+    roundInput.style.display = "none";
+  }
+}
+
+// Initialize mode on load
+onModeChange();
+
 function updateBestScore() {
   if (progress > bestScore) {
     bestScore = progress;
@@ -218,6 +236,13 @@ function addToPattern() {
 }
 
 function startGame() {
+  // Get mode and rounds
+  gameMode = modeSelect.value;
+  if (gameMode === "fixed") {
+    fixedRounds = parseInt(roundInput.value, 10) || 1;
+    if (fixedRounds < 1) fixedRounds = 1;
+    roundInput.value = fixedRounds;
+  }
   generatePattern();
   progress = 0;
   strikes = 0;
@@ -318,7 +343,11 @@ function playClueSequence() {
   statusText.textContent = "Watch.";
   statusText.classList.remove("active");
   let delay = nextClueWaitTime;
-  for (let i = 0; i <= progress; i++) {
+  let lastIdx = progress;
+  if (gameMode === "fixed" && progress >= fixedRounds) {
+    lastIdx = fixedRounds - 1;
+  }
+  for (let i = 0; i <= lastIdx; i++) {
     setTimeout(playSingleClue, delay, pattern[i]);
     delay += clueHoldTime;
     delay += cluePauseTime;
@@ -354,6 +383,19 @@ function guess(btn) {
   }
 
   guessCounter++;
+  let winCondition = false;
+  if (gameMode === "fixed") {
+    // In fixed mode, win if completed all rounds
+    if (progress === fixedRounds - 1 && guessCounter > progress) {
+      winCondition = true;
+    }
+  }
+  if (winCondition) {
+    stopGame();
+    updateBestScore();
+    showMessage("You won! You completed all rounds!", "win");
+    return;
+  }
   if (guessCounter > progress) {
     progress++;
     addToPattern();

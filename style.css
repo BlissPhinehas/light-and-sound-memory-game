@@ -1,3 +1,46 @@
+.mode-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+#modeSelect, #roundInput {
+    background: #181f1a;
+    color: #d4d4d4;
+    border: 1px solid #4caf50;
+    border-radius: 4px;
+    padding: 7px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-left: 4px;
+}
+
+#modeSelect:focus, #roundInput:focus {
+    border-color: #81c784;
+    box-shadow: 0 0 0 2px #4caf5040;
+}
+
+#modeSelect option {
+    background: #222;
+    color: #d4d4d4;
+}
+
+#roundInput {
+    width: 100px;
+    text-align: left;
+    padding-right: 8px;
+    -moz-appearance: textfield;
+}
+
+#roundInput::-webkit-outer-spin-button,
+#roundInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 #messageAction {
     max-width: 380px;
     margin: 0 auto 32px auto;
