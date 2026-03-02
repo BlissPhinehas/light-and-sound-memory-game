@@ -4,9 +4,24 @@
 
 Submitted by: **Bliss Phinehas**
 
-Time spent: **[9]** hours spent in total
+Time spent: **[11]** hours spent in total
 
 Link to project: [https://BlissPhinehas.github.io/light-and-sound-memory-game]
+## Video Walkthrough
+
+Here's a walkthrough of implemented user stories:
+
+**User losing the game:**
+
+[[Loom Link  Fail Demo](https://www.loom.com/share/f9c151de85134c109ee654bdee61baea)]
+
+**User winning the game:**
+
+[[Loom Link Win Demo](https://www.loom.com/share/99a287d98a6641209e2137aa03bf3bdc)]
+
+## Interview Recording URL Link
+
+[My 5-minute Interview Recording](https://www.loom.com/share/7bfa13dfd66d4c3394f65b0136724ea6)
 
 ## Required Functionality
 
@@ -25,12 +40,14 @@ The following **optional** features are implemented:
 - [x] Any HTML page elements (including game buttons) have been styled differently than in the tutorial
 - [x] Buttons use a b lighter color version of the same color while playing
 - [x] More than 4 functional game buttons
-- [ ] Playback speeds up on each turn
+- [x] Playback speeds up on each turn
 - [x] Computer picks a different pattern each time the game is played
 - [x] Player only loses after 3 mistakes (instead of on the first mistake)
 - [x] Game button appearance change goes beyond color (e.g., shape, gradient, etc.)
 - [x] Game button sound is more complex than a single tone (e.g., chord, sound file, etc.)
 - [x] User has a limited amount of time to enter their guess on each turn
+- [x] Players can now choose between "Endless Mode" and "Fixed Rounds Mode".
+- [x] In "Fixed Rounds Mode", players can specify the number of rounds they want to play.
 
 The following **additional** features are implemented:
 
@@ -41,19 +58,12 @@ The following **additional** features are implemented:
 - [x] Animated particle background
 - [x] Color-blind accessible — unique shape icons on each button (circle, square, triangle, star)
 - [x] Environmental awareness theme with curated facts
+- [x] Game button appearance change goes beyond color (e.g., shape, gradient, etc.)
+- [x] Game button sound is more complex than a single tone (e.g., chord, sound file, etc.)
+- [x] User has a limited amount of time to enter their guess on each turn
 - [x] Players can now choose between "Endless Mode" and "Fixed Rounds Mode".
 - [x] In "Fixed Rounds Mode", players can specify the number of rounds they want to play.
-## Video Walkthrough
 
-Here's a walkthrough of implemented user stories:
-
-**User losing the game:**
-
-[[Loom Link  Fail Demo](https://www.loom.com/share/f9c151de85134c109ee654bdee61baea)]
-
-**User winning the game:**
-
-[[Loom Link Win Demo](https://www.loom.com/share/99a287d98a6641209e2137aa03bf3bdc)]
 
 ## Reflection Questions
 
@@ -103,31 +113,19 @@ More broadly, I'm curious about how larger applications manage state. In this pr
 
 ### 4. If you had a few more hours to work on this project, what would you spend them doing (for example: refactoring certain functions, adding additional features, etc). Be specific. (recommended 100 - 300 words)
 
-The first thing I would do is refactor the global variables into a single game state object. 
-Right now `progress`, `strikes`, `gamePlaying`, `allowInput` and others are all floating 
-around separately at the top of the file. Grouping them into one object would make the code 
-easier to read and debug, and it would be a better habit going into larger projects.
+If I had a few more hours to work on this project, I would focus on the following improvements:
 
-I already implemented endless mode and a fixed rounds mode where the player chooses how many 
-rounds they want before starting, so those are done. The next thing I would tackle is 
-difficulty settings — specifically making the clue sequence speed up as rounds progress. 
-Right now the timing is constant throughout the game. Adding a mode where clues get faster 
-each round would add a real skill ceiling and make the game more competitive.
+1. **Dynamic Difficulty Scaling**: I would implement a feature where the game dynamically adjusts its difficulty based on the player's performance. For example, the clue sequence could speed up or the time allowed for user input could decrease as the player progresses.
 
-I would also improve the mobile experience. The game works on phones but the button press 
-behavior isn't fully optimized for touchscreens,  `onmousedown` and `onmouseup` don't always 
-behave the same way as `touchstart` and `touchend`. Fixing that properly would make the game 
-accessible to a much wider audience, which feels especially important for a project built 
-around environmental awareness and community impact.
+2. **Enhanced Visual Feedback**: I would add more engaging visual effects, such as button animations and transitions, to make the game more immersive. For instance, buttons could pulse or glow when activated.
 
-Finally I would add a leaderboard — not just a personal best, but a way for multiple players 
-on the same device to save their scores under a name and compete against each other. That 
-would turn EcoMemory from a solo experience into something you could pass around at an event 
-or in a classroom, which fits the community-focused theme of the project.
+3. **Expanded Accessibility Features**: I would further enhance accessibility by adding support for screen readers and ensuring the game is fully navigable using only a keyboard or assistive devices.
 
-## Interview Recording URL Link
+4. **Leaderboard Integration**: I would add a leaderboard feature to allow players to compete for high scores. This would encourage replayability and add a competitive element to the game.
 
-[My 5-minute Interview Recording](your-link-here)
+5. **Code Refactoring**: I would refactor the codebase to improve maintainability. This includes modularizing the game logic, grouping related functions, and using modern JavaScript patterns to make the code easier to extend in the future.
+
+These improvements would enhance the user experience, make the game more engaging, and ensure the codebase is robust and scalable for future updates.
 
 ---
 
@@ -139,21 +137,6 @@ or in a classroom, which fits the community-focused theme of the project.
 3. When the status reads *Your turn*, repeat the sequence by clicking the buttons in order
 4. Each correct round adds one more step to the pattern
 5. You have 3 strikes per game, use them wisely
-
----
-
-## Features
-
-- Endless mode — the pattern grows until you lose, no fixed limit
-- 3-strike system with visual warning on the final chance
-- Round counter that updates in real time
-- Personal best score that persists across sessions using localStorage
-- Styled loss overlay with actionable environmental facts and volunteer suggestions
-- Status indicator that tells you when to watch and when to play
-- Rotating nature facts that appear while you play
-- Animated particle background
-- Color-blind accessible — each button has a unique shape icon (circle, square, triangle, star)
-- Fully keyboard and mouse accessible
 
 ---
 
