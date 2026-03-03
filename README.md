@@ -1,6 +1,6 @@
 # Pre-work - *EcoMemory*
 
-**EcoMemory** is a Light & Sound Memory game to apply for CodePath's SITE Program.
+**EcoMemory** is a Light & Sound Memory game to apply for CodePath's SalesForce Internship Program.
 
 Submitted by: **Bliss Phinehas**
 
