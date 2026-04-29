@@ -1,27 +1,5 @@
 # Pre-work - *EcoMemory*
 
-**EcoMemory** is a Light & Sound Memory game to apply for CodePath's SalesForce Internship Program.
-
-Submitted by: **Bliss Phinehas**
-
-Time spent: **[11]** hours spent in total
-
-Link to project: [https://BlissPhinehas.github.io/light-and-sound-memory-game]
-## Video Walkthrough
-
-Here's a walkthrough of implemented user stories:
-
-**User losing the game:**
-
-[[Loom Link  Fail Demo](https://www.loom.com/share/f9c151de85134c109ee654bdee61baea)]
-
-**User winning the game:**
-
-[[Loom Link Win Demo](https://www.loom.com/share/99a287d98a6641209e2137aa03bf3bdc)]
-
-## Interview Recording URL Link
-
-[My 5-minute Interview Recording](https://www.loom.com/share/7bfa13dfd66d4c3394f65b0136724ea6)
 
 ## Required Functionality
 
